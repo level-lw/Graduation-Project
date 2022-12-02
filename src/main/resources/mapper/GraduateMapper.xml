@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lw.mapper.GraduateMapper">
+    <!--namespace根据自己需要创建的的mapper的路径和名称填写-->
+    <resultMap id="GraduateMap" type="com.lw.model.entity.GraduateEntity">
+        <result column="id" property="id"/>
+        <result column="student_id" property="studentId"/>
+        <result column="password" property="password"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="faculty" property="faculty"/>
+        <result column="major" property="major"/>
+        <result column="email" property="email"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+    <select id="selectOneByStudentId" resultMap="GraduateMap"
+            resultType="com.lw.model.entity.GraduateEntity">
+        select *
+        from graduate
+        where student_id = #{studentId};
+    </select>
+
+    <insert id="insertOne" parameterType="com.lw.model.entity.GraduateEntity">
+        insert into graduate
+        values (#{id},#{studentId},#{password},#{name},#{sex},
+                   #{faculty},#{major},#{phone},#{email},#{createTime});
+    </insert>
+
+    <update id="updatePassword">
+        update graduate
+        set password = #{password}
+        where student_id = #{username};
+    </update>
+
+</mapper>
