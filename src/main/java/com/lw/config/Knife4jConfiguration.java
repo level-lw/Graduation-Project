@@ -1,5 +1,7 @@
 package com.lw.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -18,8 +20,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
  * @Version: 1.0
  */
 
+@Slf4j
 @Configuration
 @EnableSwagger2WebMvc
+@EnableKnife4j
 public class Knife4jConfiguration {
 
     @Bean(value = "dockerBean")
