@@ -3,8 +3,8 @@ server:
   port: 8081
   tomcat:
     uri-encoding: UTF-8
-  servlet:
-    context-path: /graduation
+#  servlet:
+#    context-path: /graduation
 
 
 spring:

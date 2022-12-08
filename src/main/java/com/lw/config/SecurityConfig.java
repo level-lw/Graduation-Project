@@ -4,6 +4,7 @@ import com.lw.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -26,23 +27,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtAuthenticationFilter authenticationFilter;
 
+    @Autowired
+    private JwtAuthenticationEntry authenticationEntry;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // 配置security的过滤器链
         http.csrf().disable()
                 //  filters
                 // ajax: header加东西  options  ----  get
                 .cors()  // cors
                 .and()
+                // 禁用session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/graduation/doc.html")
+                .antMatchers("/user/login")
                 .permitAll()
-                //放行swagger
-                .antMatchers("/swagger-ui.html","/swagger-resources/**","/webjars/**","/v2/**","/api/**").
-                permitAll()
                 .anyRequest()
                 .authenticated()
+                .and()
+                // 全局认证异常处理  ----》 AuthenticationException
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntry)
                 .and()
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

@@ -30,22 +30,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals("/doc.html")||
-                request.getRequestURI().equals("/swagger-ui.html")||
-                request.getRequestURI().equals("/swagger-resources/**")||
-                request.getRequestURI().equals("/webjars/**")||
-                request.getRequestURI().equals("/v2/**")||
-                request.getRequestURI().equals("/api/**")) {
+        // 基于JWT的认证的过滤器
+        // 1.放行一些不需要认证的请求
+        if (request.getRequestURI().equalsIgnoreCase("/admin/login")) {
             filterChain.doFilter(request, response);
             return;
         }
-
+        // options请求 试探性请求
         if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
             response.setStatus(HttpServletResponse.SC_OK);
             filterChain.doFilter(request, response);
             return;
         }
 
+        // 解析token
         String token = request.getHeader("Authorization");
         log.info("token: [{}]", token);
         Claims claims = JwtUtil.parse(token);
@@ -57,6 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throw new BadCredentialsException("凭证已过期");
         }
 
+        // 存入上下文
         String username = claims.getSubject();
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(
