@@ -40,5 +40,16 @@ public class AdminController {
         return adminService.login(loginDTO);
     }
 
+    /**
+     * <h2>管理员注册</h2>
+     * @param adminEntity 管理员实体类
+     * @return 通用响应结果集
+     */
+    @ApiOperation(value = "注册")
+    @PostMapping("/register")
+    public Result<UserVo> register(@RequestBody AdminEntity adminEntity){
+        return adminService.register(adminEntity);
+    }
+
 
 }

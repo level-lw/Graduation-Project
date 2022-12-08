@@ -21,4 +21,11 @@ public interface AdminMapper {
      * @return 管理员实体
      */
     AdminEntity selectOneByUsername(@Param("username") String username);
+
+    /**
+     * <h2>注册用户</h2>
+     * @param adminEntity 用户
+     * @return 结果
+     */
+    Integer insert(AdminEntity adminEntity);
 }

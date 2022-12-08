@@ -32,7 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // 基于JWT的认证的过滤器
         // 1.放行一些不需要认证的请求
-        if (request.getRequestURI().equalsIgnoreCase("/admin/login")) {
+        if (request.getRequestURI().equalsIgnoreCase("/admin/login")
+                || request.getRequestURI().equalsIgnoreCase("/admin/register")) {
             filterChain.doFilter(request, response);
             return;
         }

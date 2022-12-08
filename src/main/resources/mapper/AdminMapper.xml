@@ -15,4 +15,9 @@
         from admin
         where username = #{username}
     </select>
+
+    <insert id="insert" parameterType="com.lw.model.entity.AdminEntity">
+        insert into admin (username, password, role, create_time)
+        values (#{username}, #{password}, #{role}, #{createTime})
+    </insert>
 </mapper>

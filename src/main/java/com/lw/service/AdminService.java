@@ -47,4 +47,24 @@ public class AdminService {
         userVo.setToken(token);
         return Result.success(userVo);
     }
+
+    public Result<UserVo> register(AdminEntity adminEntity) {
+        AdminEntity currentUser = adminMapper.selectOneByUsername(adminEntity.getUsername());
+        // 判断账号是否存在
+        if (currentUser != null){
+            return Result.fail(ErrorCode.USER_ALREADY_EXISTS);
+        }
+        // 加密密码
+        adminEntity.setPassword(passwordEncoder.encode(adminEntity.getPassword()));
+        // 设置权限
+        adminEntity.setRole("管理员");
+        // 插入数据库
+        adminMapper.insert(adminEntity);
+        // 颁发凭证
+        String token = JwtUtil.generator(adminEntity.getUsername());
+        UserVo userVo = new UserVo();
+        userVo.setUsername(adminEntity.getUsername());
+        userVo.setToken(token);
+        return Result.success(userVo);
+    }
 }
