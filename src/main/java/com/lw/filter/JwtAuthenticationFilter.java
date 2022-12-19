@@ -44,6 +44,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
+        // 放行swagger
+        if (request.getRequestURI().equalsIgnoreCase("/doc.html")
+                || request.getRequestURI().contains("/webjars")
+                || request.getRequestURI().contains("/swagger-resources")
+                || request.getRequestURI().contains("/v2/api-docs")) {
+            System.out.println("放行swagger");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         // 解析token
         String token = request.getHeader("Authorization");
         log.info("token: [{}]", token);
